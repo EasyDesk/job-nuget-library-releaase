@@ -1,4 +1,4 @@
-# job-nuget-library-release
+# job-nuget-library-deploy
 An action that sets up the `dotnet` environment to , then runs the [action-nuget-push](https://github.com/EasyDesk/action-nuget-push) action to deploy NuGet packages.
 
 ## Usage
@@ -7,7 +7,7 @@ This action pushes all files with the `.nupkg` extension to the specified NuGet 
 ### Usage example
 ```yaml
     steps:
-      - uses: EasyDesk/job-nuget-library-release@v1
+      - uses: EasyDesk/job-nuget-library-deploy@v1
         with:
           # (Required) The dotnet version version to be used.
           dotnet-version: '5.x'

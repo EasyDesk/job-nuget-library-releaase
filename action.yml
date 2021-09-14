@@ -1,5 +1,5 @@
-name: Nuget Library Release
-description: Composite action that releases on Nuget one or more Nuget libraries from a directory, using a given .NET version.
+name: Nuget Library Deploy
+description: Composite action that deploys on Nuget one or more Nuget libraries from a directory, using a given .NET version.
 
 branding:
   color: green
