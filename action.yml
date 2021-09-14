@@ -1,5 +1,5 @@
 name: Nuget Library Release
-description: Composite action that releases a Nuget library on GitHub releases and on Nuget.
+description: Composite action that releases on Nuget one or more Nuget libraries from a directory, using a given .NET version.
 
 branding:
   color: green
@@ -9,27 +9,17 @@ inputs:
   dotnet-version:
     description: .NET version to be used (e.g. 5.x or 5.0.x).
     required: true
-  repo-token:
-    description: Repository token.
+  nuget-api-key:
+    description: The Nuget API key.
+    required: true
+  nuget-url:
+    description: Url of the Nuget server (defaults to nuget.org).
     required: false
-    default: ${{ secrets.GITHUB_TOKEN }}
+    default: https://api.nuget.org/v3/index.json
   publish-dir:
-    description: Directory containing the .nupkg file(s).
+    description: Directory containing all packages to push (defaults to the current directory).
     required: false
     default: .
-  release-title:
-    description: User friendly name for this release.
-    required: true
-  nuget-api-key:
-    description: Microsoft Nuget API key.
-    required: true
-  is-prerelease:
-    description: true if this release is a prerelease.
-    required: false
-    default: 'false'
-  additional-release-files:
-    description: newline separated glob path list of files to publish on GitHub with the .nupkg
-    required: false
 
 runs:
   using: composite
@@ -38,18 +28,9 @@ runs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ inputs.dotnet-version }}
-    - name: GitHub Release
-      uses: marvinpinto/action-automatic-releases@latest
-      with:
-        repo_token: ${{ inputs.repo-token }}
-        title: ${{ inputs.release-title }}
-        draft: false
-        prerelease: ${{ inputs.is-prerelease == 'true' }}
-        files: |
-          ${{ inputs.publish-dir }}/*.nupkg
-          ${{ inputs.additional-release-files }}
-    - name: Nuget Release
-      uses: EasyDesk/action-nuget-push@v0.1.0
+    - name: Nuget Push
+      uses: EasyDesk/action-nuget-push@v1
       with:
         nuget-api-key: ${{ inputs.nuget-api-key }}
+        nuget-url: ${{ inputs.nuget-url }}
         publish-dir: ${{ inputs.publish-dir }}
